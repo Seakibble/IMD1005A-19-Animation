@@ -7,7 +7,13 @@ body {
     font-family: 'Jersey 10', sans-serif;
 
     /* Bumping up the fontsize nice and big */
-    font-size: 44px;
+    font-size: 30px;
+
+    cursor: url('../images/cursor.png'), auto;
+}
+
+button {
+    cursor: url('../images/cursorHover.png'), auto;
 }
 
 /* background */
@@ -69,6 +75,10 @@ body {
 }
 
 
+
+
+
+
 /* Title */
 
 .titleScreen {
@@ -84,6 +94,10 @@ body {
     flex-direction: column;
     justify-content: center;
 
+    /* We can space things out cleanly with gap. */
+    row-gap: 2em;
+
+    /* Removing overflow to hide scrollbars caused by elements pushing out of the sides of the page. */
     overflow: hidden;
 }
 
@@ -95,6 +109,16 @@ body {
     margin: 0 -80px 0;
 
     text-align: center;
+
+    animation: stretchIn 2s ease-in-out 0.25s backwards;
+}
+
+/* The animation starts vertically flat and transparent, before moving back to its defaults. That's why we don't need to specify a 'to' value here. */
+@keyframes stretchIn {
+    from {
+        transform: scaleY(0);
+        opacity: 0;
+    }
 }
 
 /* Setting the font weight to 400 (default text size) because this font doesn't have a bold style. CSS will proceedurally create one, but it's usually not as nice as a designed one. On pixel fonts in particular it looks pretty bad. */
@@ -104,9 +128,75 @@ h1, h2 {
     /* Adding a skew to slant the text, giving the impression of italics, and motion. Great for a Sci-fi effect! */
     transform: skew(-10deg);
 }
+
+h1 {
+    font-size: 3em;
+    color: dodgerblue;
+    text-shadow: 4px 4px teal;
+
+    /* letter and word spacing is very useful for headings, or other situations where you want to make text look distict without changing the font. In this case, because of the text-shadow, we need it to prevent the letters from blending together. */
+    letter-spacing: 4px;
+    word-spacing: 4px;
+}
+
+/* Each letter in the h1 is an i tag, set with inline block. The animations are applied to the i tags directly... */
+h1 i {
+    display: inline-block;
+    font-style: normal;
+
+    animation: flare 3s ease-in-out infinite;
+}
+
+/* ...which allows us to apply distinct animation delays to each one, creating a wave-like effect. */
+h1 i:nth-child(2) { animation-delay: 100ms; }
+h1 i:nth-child(3) { animation-delay: 200ms; }
+h1 i:nth-child(4) { animation-delay: 300ms; }
+h1 i:nth-child(5) { animation-delay: 400ms; }
+h1 i:nth-child(6) { animation-delay: 500ms; }
+h1 i:nth-child(7) { animation-delay: 600ms; }
+h1 i:nth-child(8) { animation-delay: 700ms; }
+h1 i:nth-child(9) { animation-delay: 800ms; }
+h1 i:nth-child(10) { animation-delay: 900ms; }
+h1 i:nth-child(11) { animation-delay: 1000ms; }
+h1 i:nth-child(12) { animation-delay: 1100ms; }
+
+/* The actual animation involves translating the text up, and adusting the colour and text-shadow colours. */
+@keyframes flare {
+    0% {
+        color: dodgerblue;
+        transform: translateY(0);
+        text-shadow: 4px 4px teal;
+    }
+
+    50% {
+        color: aquamarine;
+        transform: translateY(-12px);
+        text-shadow: 4px 4px lightseagreen;
+    }
+
+    100% {
+        color: dodgerblue;
+        transform: translateY(0);
+        text-shadow: 4px 4px teal;
+    }
+}
+
+/* The gradient effect on the h2 is achieved by applying a linear gradient as a background image, making the text colour transparent, then using background-clip to turn it into a stencil that cuts the background out. */
 h2 {
-    font-size: 0.8em;
+    font-size: 1.15em;
     margin: 0;
+
+    background-image: linear-gradient(gold, red);
+    color: transparent;
+    background-clip: text;
+
+    animation: pulse 3s ease-in-out infinite alternate;
+}
+
+/* The animation here is very subtle but adds a little life to the page. */
+@keyframes pulse {
+    from { opacity: 0.75;}
+    to { opacity: 1;}
 }
 
 /* The separator effect is achieved with a complex linear gradient with specific stop values. */
@@ -141,4 +231,79 @@ h2 {
     to {
         background-position: 100%;
     }
+}
+
+/* The rest of the text on the page is white withe a black text shadow to improve readability. */
+.controls, button, .description {
+    color: white;
+    text-shadow: 3px 3px black;
+}
+
+/* Controls are arranged in a grid. */
+.controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1em;
+
+    /* The controls, description, and button all have the same animation, but with different delays. */
+    animation: fadeIn 1s 1s ease-out backwards;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    50% {
+        opacity: 0.25;
+    }
+}
+
+/* This is how we're colouring important text. */
+.controls i {
+    color: yellow;
+    font-style: normal;
+}
+
+/* The text in the controls will all be left aligned by default. To fix this, we'll set every other element inside to be text-align right. 2n will offset the wrong elements, so we need to subtract one to target the other elements. */
+.controls :nth-child(2n-1) {
+    text-align: right;
+}
+
+.menu {
+    text-align: center;
+
+    animation: fadeIn 1s 1.5s ease-out backwards;
+}
+
+.menu button {
+    width: 250px;
+    transform: skew(-10deg);
+
+    background-color: black;
+    border: 4px solid #082a4c;
+
+    transition: background 0.1s, color 0.1s, transform 0.15s, box-shadow 0.2s;
+}
+
+/* The focus and hover states in this case are the same. */
+.menu button:hover, .menu button:focus {
+    background-color: #082a4c;
+    border-color: aqua;
+    /* Disabling the outline because it conflicts with our aesthetics. */
+    outline: 0;
+
+    /* To preserve the skew, we need to include it in our tranform here */
+    transform: skew(-10deg) translate(4px, -4px);
+    box-shadow: 0 0 12px aqua;
+}
+
+.description {
+    /* We're locking the description to the bottom of the page. */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    
+    animation: fadeIn 1s 2s ease-out backwards;
 }
