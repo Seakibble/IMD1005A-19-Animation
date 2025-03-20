@@ -5,38 +5,49 @@ body {
     color: white;
 
     font-family: 'Jersey 10', sans-serif;
+
+    /* Bumping up the fontsize nice and big */
     font-size: 44px;
 }
 
 /* background */
 
 .bg_wrapper {
+    /* Setting the z-index of the background to be negative so it doesn't show on top of the content */
     z-index: -100;
 }
 .bg {
+    /* Setting the z-index as above */
     z-index: -100;
+
+    /* Background elements will span the full width and height of the page */
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
 
+    /* To create a zoomed-in effect, we can set the background size to be quite large. */
     background-size: 400vh auto;
     
+    /* Apply an animation */
     animation: bg_scroll 15s linear infinite;
 }
 
 @keyframes bg_scroll {
     from {
+        /* This scrolls from 100vh to 0 on the x-axis */
+        /* A 'to' keyframe isn't needed here, the animation will animate back to the default values. */
         background-position: 100vh 0;
     }
 }
 
+/* Each plane in the background will have its own image and unique animation duration. */
+/* The duration differences produce the parallax effect as things move at different speeds. */
 .bg_1 {
     background-image: url('../images/starscape-1.png');
     animation-duration: 25s;
 }
-
 .bg_2 {
     background-image: url('../images/starscape-2.png');
     animation-duration: 40s;
@@ -45,12 +56,13 @@ body {
     background-image: url('../images/starscape-3.png');
     animation-duration: 50s;
 }
-
 .bg_4 {
     background-image: url('../images/starscape-4.png');
     animation-duration: 75s;
 }
 
+/* The filter is just a radial gradient with mostly transparent colours. */
+/* We don't want the filter to animate. */
 .bg_filter {
     background: radial-gradient(#0122, #0265);
     animation: none;
@@ -60,19 +72,22 @@ body {
 /* Title */
 
 .titleScreen {
+    /* Positioning the foreground to fill the whole page. */
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
 
+    /* The content will sit in the center of the page in a flex box. */
     display: flex;
     flex-direction: column;
+    justify-content: center;
 
     overflow: hidden;
-    justify-content: center;
 }
 
+/* This is the container for the headings. The animation has a backwards fill mode so that it doesn't start visible. */
 .titleScreen_text {
     background-color: #000c;
 
@@ -82,8 +97,11 @@ body {
     text-align: center;
 }
 
+/* Setting the font weight to 400 (default text size) because this font doesn't have a bold style. CSS will proceedurally create one, but it's usually not as nice as a designed one. On pixel fonts in particular it looks pretty bad. */
 h1, h2 {
     font-weight: 400;
+
+    /* Adding a skew to slant the text, giving the impression of italics, and motion. Great for a Sci-fi effect! */
     transform: skew(-10deg);
 }
 h2 {
@@ -91,8 +109,15 @@ h2 {
     margin: 0;
 }
 
+/* The separator effect is achieved with a complex linear gradient with specific stop values. */
 .separator {
+    /* Here we set the dimensions of the separator. */
     height: 3px;
+    width: 320px;
+
+    /* We have a negative margin to push it up, so it's nestled beneath the h2. We then add extra margin below to compensate, and create space from the bottom of the text div. */
+    margin: -10px auto 30px;
+
     background: linear-gradient(90deg, 
         rgba(255, 255, 0, 0.532) 0%, 
         rgb(255, 123, 0) 47%, 
@@ -101,14 +126,14 @@ h2 {
         rgb(255, 123, 0) 53%,
         rgba(255, 0, 0, 0.525) 100%
     );
+
+    /* Because linear gradients can't be animated, we have to cheat by increasing the size of the background and sliding it back and forth. */
     background-size: 200% 100%;
 
     animation: slide 10s ease-in-out infinite alternate;
-
-    width: 320px;
-    margin: -10px auto 30px;
 }
 
+/* We change the background position to move the gradient back and forth. */
 @keyframes slide {
     from {
         background-position: 0;
